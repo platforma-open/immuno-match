@@ -1,6 +1,6 @@
 {
   "name": "@platforma-open/milaboratories.immuno-match.software",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "ImmunoMatch software package",
   "scripts": {
@@ -26,7 +26,10 @@
       "immuno-match": {
         "binary": {
           "artifact": "immuno-match-artifact",
-          "cmd": [ "python", "{pkg}/immuno-match.py" ]
+          "cmd": [
+            "python",
+            "{pkg}/immuno-match.py"
+          ]
         }
       }
     }
