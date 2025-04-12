@@ -1,0 +1,21 @@
+{
+  "name": "@platforma-open/milaboratories.immuno-match.workflow",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Block Workflow",
+  "scripts": {
+    "build": "rm -rf dist && pl-tengo check && pl-tengo build",
+    "test": "vitest",
+    "format": "/usr/bin/env emacs --script ./format.el"
+  },
+  "dependencies": {
+    "@platforma-open/milaboratories.immuno-match.software": "workspace:*",
+    "@platforma-sdk/workflow-tengo": "catalog:",
+    "@platforma-open/milaboratories.immunomatch-assets": "catalog:"
+  },
+  "devDependencies": {
+    "@platforma-sdk/tengo-builder": "catalog:",
+    "@platforma-sdk/test": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,90 @@
+// "hello world"
+wf := import("@platforma-sdk/workflow-tengo:workflow")
+ll := import("@platforma-sdk/workflow-tengo:ll")
+pframes := import("@platforma-sdk/workflow-tengo:pframes")
+exec := import("@platforma-sdk/workflow-tengo:exec")
+assets:= import("@platforma-sdk/workflow-tengo:assets")
+render := import("@platforma-sdk/workflow-tengo:render")
+
+imm := assets.importTemplate(":imm")
+
+// Pre-resolve the heavyPCol resource before executing the workflow body
+// This ensures the required input is available and ready when the body function runs
+wf.prepare(func(args){
+	return{
+		heavyPCol: wf.resolve(args.inputHeavy, { errIfMissing: true })
+	}
+})
+
+wf.body(func(args) {
+	// BlockId needed to scope predictions to this specific block instance in result pool
+	blockId := wf.blockId().getDataAsJson()
+    heavyPCol := args.heavyPCol;
+	if is_undefined(heavyPCol) {
+		return {
+			outputs: {},
+			exports: {}
+		}
+	}
+
+	scKeyAxisSpec := heavyPCol.spec.axesSpec[0]
+	ll.assert(scKeyAxisSpec.name == "pl7.app/vdj/scClonotypeKey", "Unexpected input axes structure")
+
+	// Column bundler helps gather related PColumns together.
+	// We're using anchoring here to link related data PColumns to the Heavy Chain input PColumn.
+	bundleBuilder := wf.createPBundleBuilder();
+	// By using "main" as an alias for our input Heavy Chain PColumn, we can reference its properties
+	// (like axes and domain values) when querying for related columns, ensuring they stay properly linked.
+	bundleBuilder.addAnchor("main", args.inputHeavy);
+	// Add Primary Light Chain Sequence PColumn
+	bundleBuilder.addById({
+		name: "pl7.app/vdj/sequence",
+		// Primary Light Chain PColumn has the same domain as the "main" anchor column (the Heavy Chain PColumn
+		domainAnchor: "main",
+		// ... except for the chain type ('A' being Heavy Chain, 'B' being Light Chain)
+		domain: {
+			"pl7.app/vdj/scClonotypeChain": "B"
+		},
+		// ... and has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
+		axes: [{anchor: "main", idx: 0}]
+	});
+	// Add Primary Light Chain Chain Type PColumn to identify Kappa or Lambda chains
+	bundleBuilder.addById({
+		name: "pl7.app/vdj/chain",
+		domain: {
+			"pl7.app/vdj/scClonotypeChain": "B",
+			"pl7.app/vdj/scClonotypeChain/index": "primary"
+		},
+		// Has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
+		// The anchor axis domain includes the clonotypingRunId, which is sufficient to uniquely identify the associated
+		// Light chain type (e.g. "pl7.app/vdj/clonotypingRunId": "e0551d7e-e33b-449c-93f9-ae9b85a02616")
+		axes: [{anchor: "main", idx: 0}]
+	})
+
+	columnBundle := bundleBuilder.build();
+	
+	// Process the column bundler results in a separate template.
+	// Inside the "imm" template we will have access to the resolved PColumns from the columnBundle.
+	// createEphemeral is needed here to ensure the template is executed every time (not deduplicated)
+	immResult := render.createEphemeral(imm, {
+		blockId: blockId,
+		anchorCol: args.inputHeavy,
+		scKeyAxisSpec: scKeyAxisSpec,
+		columnBundle: columnBundle
+	})
+
+	predictionsPf := immResult.output("predictionsPf")
+
+	return {
+		outputs: {
+			// UI will use outputs to display the predictions as a histogram.
+			// `exportFrame` is needed to make the data available on the client side (model & UI)
+			predictions: pframes.exportFrame(predictionsPf)
+		},
+		exports: {
+			// Export the predictions to the results pool to make them available for downstream blocks
+			predictionsPf: predictionsPf
+		}
+	}
+})
+

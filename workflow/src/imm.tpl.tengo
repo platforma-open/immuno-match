@@ -1,0 +1,111 @@
+self := import("@platforma-sdk/workflow-tengo:tpl")
+assets:= import("@platforma-sdk/workflow-tengo:assets")
+pframes := import("@platforma-sdk/workflow-tengo:pframes")
+xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
+exec := import("@platforma-sdk/workflow-tengo:exec")
+ll := import("@platforma-sdk/workflow-tengo:ll")
+
+// Template will wait for the column bundle to be locked and ready
+self.awaitState("columnBundle", { wildcard: "*" }, "data", "InputsLocked")
+self.awaitState("columnBundle", { wildcard: "*" }, "spec", "ResourceReady")
+
+self.body(func(inputs) {
+	
+	blockId := inputs.blockId
+	anchorCol := inputs.anchorCol
+    scKeyAxisSpec := inputs.scKeyAxisSpec
+    columnBundle := inputs.columnBundle
+
+	// Preparing a CSV table from the column bundle to pass to the ImmunoMatch software (python script)
+    tableBuilder := columnBundle.xsvTableBuilder()
+
+	// TableBuilder has access to the resolved PColumns from the columnBundle, but need to select which ones to include
+	// The ImmunoMatch software needs to know the column header names. {header: "chosen-header-name"}
+	// overrides the default header name in the resulting CSV.
+    tableBuilder.add(anchorCol, {header: "VH"})
+    tableBuilder.add({
+		name: "pl7.app/vdj/sequence",
+		domainAnchor: "main",
+		domain: {
+			"pl7.app/vdj/scClonotypeChain": "B"
+		},
+		axes: [{anchor: "main", idx: 0}]
+	}, {header: "VL"})
+
+	tableBuilder.add({
+		name: "pl7.app/vdj/chain",
+		domain: {
+			"pl7.app/vdj/scClonotypeChain": "B",
+			"pl7.app/vdj/scClonotypeChain/index": "primary"
+		},
+		axes: [{anchor: "main", idx: 0}]
+	}, {header: "locus"})
+
+	tableBuilder.setAxisHeader({name: "pl7.app/vdj/scClonotypeKey"}, "scClonotypeKey")
+
+	// Build the CSV table from the selected PColumns
+    fullTable := tableBuilder.build("csv", {joinType: "Inner"})
+
+	// Import the ImmunoMatch models for Kappa and Lambda chains. They are stored separately from the block
+	// to avoid bloating the block bundle with large assets.
+	immunomatchKappa := assets.importAsset("@platforma-open/milaboratories.immunomatch-assets:immunomatch-kappa")
+	immunomatchLambda := assets.importAsset("@platforma-open/milaboratories.immunomatch-assets:immunomatch-lambda")
+
+    immunoMatch := exec.builder().
+		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:immuno-match")).
+		// Create directories for the models
+		mkDir("immunomatch-lambda").
+		mkDir("immunomatch-kappa").
+		// Add the models to the appropriate directories in the working directory
+		addAsset(immunomatchKappa, "immunomatch-kappa", []).
+		addAsset(immunomatchLambda, "immunomatch-lambda", []).
+		// Add the tableBuilder created CSV table to the working directory
+		addFile("input.csv", fullTable).
+		// Pass the model directories and input CSV to the ImmunoMatch software as arguments
+		arg("--kappa_dir").arg("immunomatch-kappa").
+		arg("--lambda_dir").arg("immunomatch-lambda").
+		arg("--input").arg("input.csv").
+		// Output the predictions to a CSV file
+		arg("--output").arg("predictions.csv").
+		// Pass the column names for the VH, VL, and locus columns
+		arg("--hseq_col").arg("VH").
+		arg("--lseq_col").arg("VL").
+		arg("--ltype_col").arg("locus").
+		// Save the ImmunoMatch output CSV file to prevent it from being deleted after the template execution
+		saveFile("predictions.csv").
+		run()
+    
+	// Get a reference to the ImmunoMatch output CSV file
+    predictionsCsv := immunoMatch.getFile("predictions.csv")
+
+	// Parse the output CSV as a PFrame with one PColumn for the pairing scores
+    predictionsPFrame := xsv.importFile(predictionsCsv, "csv",
+		{
+			axes: [{
+				column: "scClonotypeKey",
+				spec: scKeyAxisSpec
+			}],
+			columns: [{
+				column: "pairing_scores",
+				spec: {
+					valueType: "Double",
+					name: "pl7.app/immunomatch/pairing_score",
+					annotations: {
+						"pl7.app/label": "Pairing Score",
+						"pl7.app/vdj/receptor": "IG"
+					},
+					domain: {
+						"pl7.app/blockId": blockId,
+						"pl7.app/alphabet": "aminoacid",
+						"pl7.app/vdj/feature": "VDJRegion",
+						"pl7.app/vdj/scClonotypeChain/index": "primary"
+					}
+				}
+			}]
+		}
+	);
+
+    return {
+		predictionsPf: predictionsPFrame
+    }
+})
