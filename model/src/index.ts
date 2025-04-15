@@ -30,7 +30,7 @@ export const model = BlockModel.create()
 
   .withUiState<UiState>({
     graphStateHistogram: {
-      title: 'Pairing Scores Histogram',
+      title: 'ImmunoMatch',
       template: 'bins',
       currentTab: null,
       layersSettings: {
