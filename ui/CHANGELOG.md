@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.immuno-match.ui
 
+## 1.0.3
+
+### Patch Changes
+
+- 3629e27: Add datasource selection in GraphMaker settings slot
+- Updated dependencies [3629e27]
+  - @platforma-open/milaboratories.immuno-match.model@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
