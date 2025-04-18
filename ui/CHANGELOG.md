@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.immuno-match.ui
 
+## 1.0.4
+
+### Patch Changes
+
+- e40101e: Add logs; fixed logos
+- Updated dependencies [e40101e]
+  - @platforma-open/milaboratories.immuno-match.model@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes

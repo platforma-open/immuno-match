@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.0.3
+
+### Patch Changes
+
+- e40101e: Add logs; fixed logos
+
 ## 1.0.2
 
 ### Patch Changes

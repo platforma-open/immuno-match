@@ -1,5 +1,14 @@
 # @platforma-open/milaboratories.immuno-match
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [e40101e]
+  - @platforma-open/milaboratories.immuno-match.workflow@1.0.3
+  - @platforma-open/milaboratories.immuno-match.model@1.0.4
+  - @platforma-open/milaboratories.immuno-match.ui@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes
