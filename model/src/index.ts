@@ -1,3 +1,4 @@
+import type { GraphMakerState } from '@milaboratories/graph-maker';
 import type {
   InferOutputsType,
   PlRef,
@@ -7,7 +8,6 @@ import {
   createPFrameForGraphs,
   isPColumnSpec,
 } from '@platforma-sdk/model';
-import type { GraphMakerState } from '@milaboratories/graph-maker';
 
 export type BlockArgs = {
   // Heavy chain PColumn reference from a MiXCR Clonotyping 2 block
@@ -52,6 +52,8 @@ export const model = BlockModel.create()
     );
   })
 
+  .output('log', (ctx) => ctx.outputs?.resolve('log')?.getLogHandle())
+
   // Get the IMM predictions and prepare them for the histogram graph
   .output('predictions', (ctx) => {
     const pCols = ctx.outputs?.resolve('predictions')?.getPColumns();
@@ -59,6 +61,8 @@ export const model = BlockModel.create()
 
     return createPFrameForGraphs(ctx, pCols);
   })
+
+  .output('isRunning', (ctx) => ctx.outputs?.getIsReadyOrError() === false)
 
   // Create the UI sections
   .sections((_ctx) => [

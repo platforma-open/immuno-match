@@ -79,7 +79,9 @@ wf.body(func(args) {
 		outputs: {
 			// UI will use outputs to display the predictions as a histogram.
 			// `exportFrame` is needed to make the data available on the client side (model & UI)
-			predictions: pframes.exportFrame(predictionsPf)
+			predictions: pframes.exportFrame(predictionsPf),
+
+			log: immResult.output("log")
 		},
 		exports: {
 			// Export the predictions to the results pool to make them available for downstream blocks
