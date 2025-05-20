@@ -94,7 +94,12 @@ self.body(func(inputs) {
 					name: "pl7.app/immunomatch/pairing_score",
 					annotations: {
 						"pl7.app/label": "Pairing Score",
-						"pl7.app/vdj/receptor": "IG"
+						"pl7.app/vdj/receptor": "IG",
+						"pl7.app/min": 0,
+						"pl7.app/max": 1,
+						"pl7.app/isScore": "true",
+						"pl7.app/score/rankValues": "increasing",
+						"pl7.app/score/defaultCutoff": 0.8
 					},
 					domain: {
 						"pl7.app/blockId": blockId,
