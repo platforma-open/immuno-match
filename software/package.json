@@ -33,6 +33,15 @@
             "{pkg}/immuno-match.py"
           ]
         }
+      },
+      "default-cutoff": {
+        "binary": {
+          "artifact": "immuno-match-artifact",
+          "cmd": [
+            "python",
+            "{pkg}/default-cutoff.py"
+          ]
+        }
       }
     }
   },

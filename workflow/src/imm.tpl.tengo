@@ -3,7 +3,8 @@ assets:= import("@platforma-sdk/workflow-tengo:assets")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 exec := import("@platforma-sdk/workflow-tengo:exec")
-ll := import("@platforma-sdk/workflow-tengo:ll")
+render := import("@platforma-sdk/workflow-tengo:render")
+buildExportsTpl := assets.importTemplate(":build-exports")
 
 // Template will wait for the column bundle to be locked and ready
 self.awaitState("columnBundle", { wildcard: "*" }, "data", "InputsLocked")
@@ -15,7 +16,6 @@ self.body(func(inputs) {
 	anchorCol := inputs.anchorCol
     scKeyAxisSpec := inputs.scKeyAxisSpec
     columnBundle := inputs.columnBundle
-
 	// Preparing a CSV table from the column bundle to pass to the ImmunoMatch software (python script)
     tableBuilder := columnBundle.xsvTableBuilder()
 
@@ -80,37 +80,29 @@ self.body(func(inputs) {
 	// Get a reference to the ImmunoMatch output CSV file
     predictionsCsv := immunoMatch.getFile("predictions.csv")
 
-	// Parse the output CSV as a PFrame with one PColumn for the pairing scores
-    predictionsPFrame := xsv.importFile(predictionsCsv, "csv",
-		{
-			axes: [{
-				column: "scClonotypeKey",
-				spec: scKeyAxisSpec
-			}],
-			columns: [{
-				column: "pairing_scores",
-				spec: {
-					valueType: "Double",
-					name: "pl7.app/immunomatch/pairing_score",
-					annotations: {
-						"pl7.app/label": "Pairing Score",
-						"pl7.app/vdj/receptor": "IG",
-						"pl7.app/min": 0,
-						"pl7.app/max": 1,
-						"pl7.app/isScore": "true",
-						"pl7.app/score/rankValues": "increasing",
-						"pl7.app/score/defaultCutoff": 0.8
-					},
-					domain: {
-						"pl7.app/blockId": blockId,
-						"pl7.app/alphabet": "aminoacid",
-						"pl7.app/vdj/feature": "VDJRegion",
-						"pl7.app/vdj/scClonotypeChain/index": "primary"
-					}
-				}
-			}]
-		}
-	);
+	// Calculate default pairing score cutoff
+	annotationValues := exec.builder().
+		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:default-cutoff")).
+		addFile("inputFile.csv", predictionsCsv).
+		arg("inputFile.csv").
+		saveFileContent("pairing_75.txt").
+		printErrStreamToStdout().
+		saveStdoutContent().
+		cache(24 * 60 * 60 * 1000).
+		run()
+
+	// cutoff not accessible in this template, so we pass it to a render template
+	// and there prepare the output predictions PFrame with its specs
+	cutoff := annotationValues.getFileContent("pairing_75.txt")
+	buildExports := render.create(buildExportsTpl, {
+		scKeyAxisSpec: scKeyAxisSpec,
+		predictionsCsv: predictionsCsv,
+		cutoff: cutoff,
+		blockId: blockId
+	})
+
+	// Get the predictions PFrame from the buildExports template
+	predictionsPFrame := buildExports.output("predictionsPFrame")
 
     return {
 		predictionsPf: predictionsPFrame,
