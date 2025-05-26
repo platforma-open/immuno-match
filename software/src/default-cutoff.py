@@ -3,11 +3,11 @@ import numpy as np
 import argparse
 import os
 
-def process_enrichment(input_file, output_dir='.'):
+def process_data(input_file, output_dir='.'):
     # Read the CSV file
     df = pd.read_csv(input_file)
 
-    # Extract the 'Enrichment' column
+    # Extract the 'pairing_scores' column
     pairing_values = df['pairing_scores'].values
 
     # Calculate 75th percentile
@@ -39,7 +39,7 @@ def main():
     args = parser.parse_args()
     
     try:
-        process_enrichment(args.input_file, args.output_dir)
+        process_data(args.input_file, args.output_dir)
     except FileNotFoundError:
         print(f"Error: Input file '{args.input_file}' not found.")
         exit(1)
