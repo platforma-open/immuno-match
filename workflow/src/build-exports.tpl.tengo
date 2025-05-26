@@ -1,0 +1,50 @@
+self := import("@platforma-sdk/workflow-tengo:tpl")
+xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
+pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
+
+self.defineOutputs("predictionsPFrame")
+
+self.body(func(args) {
+
+    // Load input values
+    cutoff := args.cutoff.getDataAsJson()
+    scKeyAxisSpec := args.scKeyAxisSpec
+    predictionsCsv := args.predictionsCsv
+    blockId := args.blockId
+
+    // Parse the output CSV as a PFrame with one PColumn for the pairing scores
+    predictionsPFrame := xsv.importFile(predictionsCsv, "csv",
+		{
+			axes: [{
+				column: "scClonotypeKey",
+				spec: scKeyAxisSpec
+			}],
+			columns: [{
+				column: "pairing_scores",
+				spec: {
+					valueType: "Double",
+					name: "pl7.app/immunomatch/pairing_score",
+					annotations: {
+						"pl7.app/label": "Pairing Score",
+						"pl7.app/vdj/receptor": "IG",
+						"pl7.app/min": "0",
+						"pl7.app/max": "1",
+						"pl7.app/isScore": "true",
+						"pl7.app/score/rankValues": "increasing",
+						"pl7.app/score/defaultCutoff": string(cutoff)
+					},
+					domain: {
+						"pl7.app/blockId": blockId,
+						"pl7.app/alphabet": "aminoacid",
+						"pl7.app/vdj/feature": "VDJRegion",
+						"pl7.app/vdj/scClonotypeChain/index": "primary"
+					}
+				}
+			}]
+		}
+	);
+
+    return {
+        predictionsPFrame: predictionsPFrame  
+    }
+})
