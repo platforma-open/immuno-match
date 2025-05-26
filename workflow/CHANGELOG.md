@@ -1,5 +1,17 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.1.0
+
+### Minor Changes
+
+- 38db510: Adde new templates to generate annotations for top-antiboides
+- 5b8eb79: Update annotations
+
+### Patch Changes
+
+- Updated dependencies [38db510]
+  - @platforma-open/milaboratories.immuno-match.software@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes
