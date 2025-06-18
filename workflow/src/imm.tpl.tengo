@@ -30,6 +30,8 @@ self.body(func(inputs) {
 	tableBuilder.setAxisHeader(anchorSpec.axesSpec[0].name, "scClonotypeKey")
 
 	// Build the CSV table from the selected PColumns
+	tableBuilder.mem("16GiB")
+	tableBuilder.cpu(1)
     fullTable := tableBuilder.build()
 
 	// Import the ImmunoMatch models for Kappa and Lambda chains. They are stored separately from the block
@@ -39,6 +41,8 @@ self.body(func(inputs) {
 
     immunoMatch := exec.builder().
 		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:immuno-match")).
+		mem("64GiB").
+		cpu(1).
 		// Create directories for the models
 		mkDir("immunomatch-lambda").
 		mkDir("immunomatch-kappa").
@@ -69,6 +73,8 @@ self.body(func(inputs) {
 	// Calculate default pairing score cutoff
 	annotationValues := exec.builder().
 		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:default-cutoff")).
+		mem("16GiB").
+		cpu(1).
 		addFile("inputFile.csv", predictionsCsv).
 		arg("inputFile.csv").
 		saveFileContent("pairing_75.txt").
