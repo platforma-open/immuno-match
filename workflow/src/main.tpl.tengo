@@ -37,29 +37,27 @@ wf.body(func(args) {
 	// (like axes and domain values) when querying for related columns, ensuring they stay properly linked.
 	bundleBuilder.addAnchor("main", args.inputHeavy);
 	// Add Primary Light Chain Sequence PColumn
-	bundleBuilder.addById({
+	bundleBuilder.addSingle({
+		// ... and has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
+		axes: [{anchor: "main", idx: 0}],
 		name: "pl7.app/vdj/sequence",
-		// Primary Light Chain PColumn has the same domain as the "main" anchor column (the Heavy Chain PColumn
-		domainAnchor: "main",
 		// ... except for the chain type ('A' being Heavy Chain, 'B' being Light Chain)
 		domain: {
 			"pl7.app/vdj/scClonotypeChain": "B"
-		},
-		// ... and has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
-		axes: [{anchor: "main", idx: 0}]
-	});
+		}
+	}, "VL");
 	// Add Primary Light Chain Chain Type PColumn to identify Kappa or Lambda chains
-	bundleBuilder.addById({
+	bundleBuilder.addSingle({
+		// Has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
+		// The anchor axis domain includes the clonotypingRunId, which is sufficient to uniquely identify the associated
+		// Light chain type (e.g. "pl7.app/vdj/clonotypingRunId": "e0551d7e-e33b-449c-93f9-ae9b85a02616")
+		axes: [{anchor: "main", idx: 0}],
 		name: "pl7.app/vdj/chain",
 		domain: {
 			"pl7.app/vdj/scClonotypeChain": "B",
 			"pl7.app/vdj/scClonotypeChain/index": "primary"
-		},
-		// Has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
-		// The anchor axis domain includes the clonotypingRunId, which is sufficient to uniquely identify the associated
-		// Light chain type (e.g. "pl7.app/vdj/clonotypingRunId": "e0551d7e-e33b-449c-93f9-ae9b85a02616")
-		axes: [{anchor: "main", idx: 0}]
-	})
+		}
+	}, "locus")
 
 	columnBundle := bundleBuilder.build();
 	

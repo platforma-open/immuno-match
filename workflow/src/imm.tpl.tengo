@@ -17,34 +17,19 @@ self.body(func(inputs) {
     scKeyAxisSpec := inputs.scKeyAxisSpec
     columnBundle := inputs.columnBundle
 	// Preparing a CSV table from the column bundle to pass to the ImmunoMatch software (python script)
-    tableBuilder := columnBundle.xsvTableBuilder()
+    tableBuilder := pframes.csvFileBuilder()
 
 	// TableBuilder has access to the resolved PColumns from the columnBundle, but need to select which ones to include
 	// The ImmunoMatch software needs to know the column header names. {header: "chosen-header-name"}
 	// overrides the default header name in the resulting CSV.
     tableBuilder.add(anchorCol, {header: "VH"})
-    tableBuilder.add({
-		name: "pl7.app/vdj/sequence",
-		domainAnchor: "main",
-		domain: {
-			"pl7.app/vdj/scClonotypeChain": "B"
-		},
-		axes: [{anchor: "main", idx: 0}]
-	}, {header: "VL"})
-
-	tableBuilder.add({
-		name: "pl7.app/vdj/chain",
-		domain: {
-			"pl7.app/vdj/scClonotypeChain": "B",
-			"pl7.app/vdj/scClonotypeChain/index": "primary"
-		},
-		axes: [{anchor: "main", idx: 0}]
-	}, {header: "locus"})
+    tableBuilder.add(columnBundle.getColumn("VL"), {header: "VL"})
+	tableBuilder.add(columnBundle.getColumn("locus"), {header: "locus"})
 
 	tableBuilder.setAxisHeader({name: "pl7.app/vdj/scClonotypeKey"}, "scClonotypeKey")
 
 	// Build the CSV table from the selected PColumns
-    fullTable := tableBuilder.build("csv", {joinType: "Inner"})
+    fullTable := tableBuilder.build()
 
 	// Import the ImmunoMatch models for Kappa and Lambda chains. They are stored separately from the block
 	// to avoid bloating the block bundle with large assets.
