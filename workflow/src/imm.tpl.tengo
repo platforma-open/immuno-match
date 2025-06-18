@@ -16,17 +16,18 @@ self.body(func(inputs) {
 	anchorCol := inputs.anchorCol
     scKeyAxisSpec := inputs.scKeyAxisSpec
     columnBundle := inputs.columnBundle
+	anchorSpec := columnBundle.getSpec(anchorCol)
 	// Preparing a CSV table from the column bundle to pass to the ImmunoMatch software (python script)
     tableBuilder := pframes.csvFileBuilder()
 
 	// TableBuilder has access to the resolved PColumns from the columnBundle, but need to select which ones to include
 	// The ImmunoMatch software needs to know the column header names. {header: "chosen-header-name"}
 	// overrides the default header name in the resulting CSV.
-    tableBuilder.add(anchorCol, {header: "VH"})
+    tableBuilder.add(columnBundle.getColumn(anchorCol), {header: "VH"})
     tableBuilder.add(columnBundle.getColumn("VL"), {header: "VL"})
 	tableBuilder.add(columnBundle.getColumn("locus"), {header: "locus"})
 
-	tableBuilder.setAxisHeader({name: "pl7.app/vdj/scClonotypeKey"}, "scClonotypeKey")
+	tableBuilder.setAxisHeader(anchorSpec.axesSpec[0].name, "scClonotypeKey")
 
 	// Build the CSV table from the selected PColumns
     fullTable := tableBuilder.build()

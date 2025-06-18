@@ -43,7 +43,10 @@ wf.body(func(args) {
 		name: "pl7.app/vdj/sequence",
 		// ... except for the chain type ('A' being Heavy Chain, 'B' being Light Chain)
 		domain: {
-			"pl7.app/vdj/scClonotypeChain": "B"
+			"pl7.app/alphabet": "aminoacid",
+			"pl7.app/vdj/feature": "VDJRegion",
+			"pl7.app/vdj/scClonotypeChain": "B",
+			"pl7.app/vdj/scClonotypeChain/index": "primary"
 		}
 	}, "VL");
 	// Add Primary Light Chain Chain Type PColumn to identify Kappa or Lambda chains
