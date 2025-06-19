@@ -16,35 +16,23 @@ self.body(func(inputs) {
 	anchorCol := inputs.anchorCol
     scKeyAxisSpec := inputs.scKeyAxisSpec
     columnBundle := inputs.columnBundle
+	anchorSpec := columnBundle.getSpec(anchorCol)
 	// Preparing a CSV table from the column bundle to pass to the ImmunoMatch software (python script)
-    tableBuilder := columnBundle.xsvTableBuilder()
+    tableBuilder := pframes.csvFileBuilder()
 
 	// TableBuilder has access to the resolved PColumns from the columnBundle, but need to select which ones to include
 	// The ImmunoMatch software needs to know the column header names. {header: "chosen-header-name"}
 	// overrides the default header name in the resulting CSV.
-    tableBuilder.add(anchorCol, {header: "VH"})
-    tableBuilder.add({
-		name: "pl7.app/vdj/sequence",
-		domainAnchor: "main",
-		domain: {
-			"pl7.app/vdj/scClonotypeChain": "B"
-		},
-		axes: [{anchor: "main", idx: 0}]
-	}, {header: "VL"})
+    tableBuilder.add(columnBundle.getColumn(anchorCol), {header: "VH"})
+    tableBuilder.add(columnBundle.getColumn("VL"), {header: "VL"})
+	tableBuilder.add(columnBundle.getColumn("locus"), {header: "locus"})
 
-	tableBuilder.add({
-		name: "pl7.app/vdj/chain",
-		domain: {
-			"pl7.app/vdj/scClonotypeChain": "B",
-			"pl7.app/vdj/scClonotypeChain/index": "primary"
-		},
-		axes: [{anchor: "main", idx: 0}]
-	}, {header: "locus"})
-
-	tableBuilder.setAxisHeader({name: "pl7.app/vdj/scClonotypeKey"}, "scClonotypeKey")
+	tableBuilder.setAxisHeader(anchorSpec.axesSpec[0].name, "scClonotypeKey")
 
 	// Build the CSV table from the selected PColumns
-    fullTable := tableBuilder.build("csv", {joinType: "Inner"})
+	tableBuilder.mem("16GiB")
+	tableBuilder.cpu(1)
+    fullTable := tableBuilder.build()
 
 	// Import the ImmunoMatch models for Kappa and Lambda chains. They are stored separately from the block
 	// to avoid bloating the block bundle with large assets.
@@ -53,6 +41,8 @@ self.body(func(inputs) {
 
     immunoMatch := exec.builder().
 		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:immuno-match")).
+		mem("64GiB").
+		cpu(1).
 		// Create directories for the models
 		mkDir("immunomatch-lambda").
 		mkDir("immunomatch-kappa").
@@ -83,6 +73,8 @@ self.body(func(inputs) {
 	// Calculate default pairing score cutoff
 	annotationValues := exec.builder().
 		software(assets.importSoftware("@platforma-open/milaboratories.immuno-match.software:default-cutoff")).
+		mem("16GiB").
+		cpu(1).
 		addFile("inputFile.csv", predictionsCsv).
 		arg("inputFile.csv").
 		saveFileContent("pairing_75.txt").
