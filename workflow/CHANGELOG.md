@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.2.0
+
+### Minor Changes
+
+- 52b7235: Update SDK and workflow
+
 ## 1.1.1
 
 ### Patch Changes
