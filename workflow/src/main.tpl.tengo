@@ -38,16 +38,15 @@ wf.body(func(args) {
 	bundleBuilder.addAnchor("main", args.inputHeavy);
 	// Add Primary Light Chain Sequence PColumn
 	bundleBuilder.addSingle({
-		// ... and has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
-		axes: [{anchor: "main", idx: 0}],
-		name: "pl7.app/vdj/sequence",
+		// Primary Light Chain PColumn has the same domain as the "main" anchor column (the Heavy Chain PColumn
+		domainAnchor: "main",
 		// ... except for the chain type ('A' being Heavy Chain, 'B' being Light Chain)
 		domain: {
-			"pl7.app/alphabet": "aminoacid",
-			"pl7.app/vdj/feature": "VDJRegion",
-			"pl7.app/vdj/scClonotypeChain": "B",
-			"pl7.app/vdj/scClonotypeChain/index": "primary"
-		}
+			"pl7.app/vdj/scClonotypeChain": "B"
+		},
+		name: "pl7.app/vdj/sequence",
+		// ... and has one axis, the same as the first and only axis of the "main" anchor column (the Heavy Chain PColumn)
+		axes: [{anchor: "main", idx: 0}]
 	}, "VL");
 	// Add Primary Light Chain Chain Type PColumn to identify Kappa or Lambda chains
 	bundleBuilder.addSingle({

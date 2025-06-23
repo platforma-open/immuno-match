@@ -32,7 +32,7 @@ export const model = BlockModel.create()
     graphStateHistogram: {
       title: 'ImmunoMatch',
       template: 'bins',
-      currentTab: null,
+      currentTab: 'settings',
       layersSettings: {
         bins: { fillColor: '#99e099' },
       },
