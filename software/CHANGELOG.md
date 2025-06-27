@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.software
 
+## 1.2.0
+
+### Minor Changes
+
+- cf6d8df: Fix software version
+
 ## 1.1.0
 
 ### Minor Changes
