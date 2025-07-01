@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match
 
+## 1.1.0
+
+### Minor Changes
+
+- 82972ee: allow prepare venv on Windows
+
 ## 1.0.8
 
 ### Patch Changes
