@@ -90,7 +90,8 @@ self.body(func(inputs) {
 		scKeyAxisSpec: scKeyAxisSpec,
 		predictionsCsv: predictionsCsv,
 		cutoff: cutoff,
-		blockId: blockId
+		blockId: blockId,
+		anchorCol: anchorCol
 	})
 
 	// Get the predictions PFrame from the buildExports template

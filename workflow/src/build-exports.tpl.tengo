@@ -1,6 +1,7 @@
 self := import("@platforma-sdk/workflow-tengo:tpl")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
+pframes := import("@platforma-sdk/workflow-tengo:pframes")
 
 self.defineOutputs("predictionsPFrame")
 
@@ -11,9 +12,10 @@ self.body(func(args) {
     scKeyAxisSpec := args.scKeyAxisSpec
     predictionsCsv := args.predictionsCsv
     blockId := args.blockId
+    anchorCol := args.anchorCol
 
     // Parse the output CSV as a PFrame with one PColumn for the pairing scores
-    predictionsPFrame := xsv.importFile(predictionsCsv, "csv",
+    rawPredictionsPFrame := xsv.importFile(predictionsCsv, "csv",
 		{
 			axes: [{
 				column: "scClonotypeKey",
@@ -41,8 +43,27 @@ self.body(func(args) {
 					}
 				}
 			}]
-		}
+		},
+		{ splitDataAndSpec: true }
 	);
+
+    // Make trace for provenance
+    anchorSpec := anchorCol.spec
+    trace := pSpec.makeTrace(anchorSpec,
+	// OR????
+	// trace := pSpec.makeTrace(scKeyAxisSpec,
+		{
+			type: "milaboratories.immuno-match",
+			importance: 30,
+			label: "ImmunoMatch Pairing Prediction"
+		})
+
+    // Apply trace to the predictions
+    predictionsPFrame := pframes.pFrameBuilder()
+    for id, v in rawPredictionsPFrame {
+        predictionsPFrame.add(id, trace.inject(v.spec), v.data)
+    }
+    predictionsPFrame = predictionsPFrame.build()
 
     return {
         predictionsPFrame: predictionsPFrame  
