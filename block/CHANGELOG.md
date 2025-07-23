@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match
 
+## 1.1.1
+
+### Patch Changes
+
+- @platforma-open/milaboratories.immuno-match.workflow@1.2.2
+
 ## 1.1.0
 
 ### Minor Changes

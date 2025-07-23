@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.software
 
+## 1.2.1
+
+### Patch Changes
+
+- 8f21cda: Update used python package versions
+
 ## 1.2.0
 
 ### Minor Changes

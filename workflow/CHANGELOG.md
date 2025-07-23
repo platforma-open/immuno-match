@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [8f21cda]
+  - @platforma-open/milaboratories.immuno-match.software@1.2.1
+
 ## 1.2.1
 
 ### Patch Changes
