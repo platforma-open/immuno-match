@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.software
 
+## 1.2.2
+
+### Patch Changes
+
+- a76d6df: Full SDK update and new python env usage
+
 ## 1.2.1
 
 ### Patch Changes
