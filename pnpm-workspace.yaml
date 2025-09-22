@@ -19,7 +19,7 @@ catalog:
   
   "@platforma-sdk/test": ^1.43.12
 
-  "@platforma-open/milaboratories.runenv-python-3": ^1.4.9
+  "@platforma-open/milaboratories.runenv-python-3": ^1.4.13
   "@platforma-open/milaboratories.immunomatch-assets": ^1.0.0
   
   "vue": ^3.5.13

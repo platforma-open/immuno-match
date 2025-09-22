@@ -65,7 +65,7 @@ def pairing_scores_batches (df_dir,hseq_col,lseq_col,model_checkpoint):
   batch_size=48
   args = TrainingArguments(
     f"tmp",
-    eval_strategy = "no",
+    evaluation_strategy = "no",
     save_strategy = "epoch",
     #learning_rate=2e-5,
     per_device_train_batch_size=batch_size,

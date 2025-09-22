@@ -16,8 +16,8 @@ catalogs:
       specifier: ^1.0.0
       version: 1.0.1
     '@platforma-open/milaboratories.runenv-python-3':
-      specifier: ^1.1.16
-      version: 1.1.16
+      specifier: ^1.4.13
+      version: 1.4.13
     '@platforma-sdk/block-tools':
       specifier: ^2.6.6
       version: 2.6.6
@@ -132,7 +132,7 @@ importers:
     devDependencies:
       '@platforma-open/milaboratories.runenv-python-3':
         specifier: 'catalog:'
-        version: 1.1.16
+        version: 1.4.13
       '@platforma-sdk/package-builder':
         specifier: 'catalog:'
         version: 3.5.4
@@ -1189,8 +1189,20 @@ packages:
   '@platforma-open/milaboratories.immunomatch-assets@1.0.1':
     resolution: {integrity: sha512-G7c0stegM55G/Zr3Oh3panedNWgN0MCoWX81YkAMAxLZQR6TKNUAMwUBsYPWBLCrktw7z/IzwIjp3GGjONX8cA==}
 
-  '@platforma-open/milaboratories.runenv-python-3@1.1.16':
-    resolution: {integrity: sha512-A46M7cK1uVW4itLjXX9nodZm97ETcDBDQPQpBsPmu+Wjy8wlyHxUUH/v8KvtW45gNcW+yNO0LvzqE0u4GL86Jg==}
+  '@platforma-open/milaboratories.runenv-python-3.10.11@1.1.13':
+    resolution: {integrity: sha512-IWiWrnfCBDe3NTaEneTFZp0w1NgHKQH5gtH6fS0N5H1UUQQYWWeQnfSXXUUvS/Zk4uJUPok6X5FulQO6AQjO1g==}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10-atls@1.1.13':
+    resolution: {integrity: sha512-ONoKe3wXX8zl6qEg19R0P6MIRoXOZvIhISAzKwjwO20xtWw5XjZdPeORnKjxP4QTOYs7DMoygfWvkDxd4UiVdA==}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10-sccoda@1.2.13':
+    resolution: {integrity: sha512-ihOmeabM9pl/t2hZ5fRFfIL37F9XdT9+2MLIIcX8I40BR5pTbz4DKSJ3AbqpnG1Oi1nQTKJXgFbWOuoXfaZ5AQ==}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10@1.2.11':
+    resolution: {integrity: sha512-PpuA67wPqA9Rzm71a1zAG8n5c8GCRfMDRBU6nj4jRWwR+xBwYDBxiaSlIOJHmz9gxOXldc/v+Hhzkmt7oItu9g==}
+
+  '@platforma-open/milaboratories.runenv-python-3@1.4.13':
+    resolution: {integrity: sha512-a/qjSSqCtdNHNEJn76gJmqZ4oGaYib8dNvexvF/evDcAQWh8TVzRfH71+VhTo4cXtr6L7ldcx/K8v0Cwvn7HPQ==}
 
   '@platforma-open/milaboratories.software-ptabler@1.12.4':
     resolution: {integrity: sha512-owDO4imeBgHawQRrHV9GbsA+8WJaIl0Mlxwam1unUsfnCOWxqtbWi9Kt+Q201otp4VjACPbA5KOtO6Czwz4hHg==}
@@ -6982,7 +6994,20 @@ snapshots:
       '@platforma-open/milaboratories.immunomatch-assets.immunomatch-kappa': 1.0.1
       '@platforma-open/milaboratories.immunomatch-assets.immunomatch-lambda': 1.0.1
 
-  '@platforma-open/milaboratories.runenv-python-3@1.1.16': {}
+  '@platforma-open/milaboratories.runenv-python-3.10.11@1.1.13': {}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10-atls@1.1.13': {}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10-sccoda@1.2.13': {}
+
+  '@platforma-open/milaboratories.runenv-python-3.12.10@1.2.11': {}
+
+  '@platforma-open/milaboratories.runenv-python-3@1.4.13':
+    dependencies:
+      '@platforma-open/milaboratories.runenv-python-3.10.11': 1.1.13
+      '@platforma-open/milaboratories.runenv-python-3.12.10': 1.2.11
+      '@platforma-open/milaboratories.runenv-python-3.12.10-atls': 1.1.13
+      '@platforma-open/milaboratories.runenv-python-3.12.10-sccoda': 1.2.13
 
   '@platforma-open/milaboratories.software-ptabler@1.12.4': {}
 
