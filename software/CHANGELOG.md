@@ -1,5 +1,14 @@
 # @platforma-open/milaboratories.immuno-match.software
 
+## 1.2.3
+
+### Patch Changes
+
+- 645609b: technical release
+- 676c387: technical release
+- a58fba0: technical release
+- 7f30f11: technical release
+
 ## 1.2.2
 
 ### Patch Changes

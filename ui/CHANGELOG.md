@@ -1,5 +1,19 @@
 # @platforma-open/milaboratories.immuno-match.ui
 
+## 1.0.6
+
+### Patch Changes
+
+- 645609b: technical release
+- 676c387: technical release
+- a58fba0: technical release
+- 7f30f11: technical release
+- Updated dependencies [645609b]
+- Updated dependencies [676c387]
+- Updated dependencies [a58fba0]
+- Updated dependencies [7f30f11]
+  - @platforma-open/milaboratories.immuno-match.model@1.0.6
+
 ## 1.0.5
 
 ### Patch Changes
