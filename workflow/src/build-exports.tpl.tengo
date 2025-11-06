@@ -40,7 +40,8 @@ self.body(func(args) {
 						"pl7.app/vdj/scClonotypeChain/index": "primary"
 					}
 				}
-			}]
+			}],
+			storageFormat: "Parquet"
 		}
 	);
 

@@ -45,7 +45,7 @@ export const model = BlockModel.create()
         isPColumnSpec(spec)
         && spec.name === 'pl7.app/vdj/sequence'
         && spec.domain?.['pl7.app/alphabet'] === 'aminoacid'
-        && spec.domain?.['pl7.app/vdj/feature'] === 'VDJRegion'
+        && spec.domain?.['pl7.app/vdj/feature'] === 'VDJRegionInFrame'
         && spec.axesSpec?.[0]?.domain?.['pl7.app/vdj/receptor'] === 'IG'
         && spec.domain?.['pl7.app/vdj/scClonotypeChain'] === 'A'
         && spec.domain?.['pl7.app/vdj/scClonotypeChain/index'] === 'primary',
