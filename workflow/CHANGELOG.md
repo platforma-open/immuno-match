@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.3.0
+
+### Minor Changes
+
+- afe0ac3: uodate SDK
+
 ## 1.2.4
 
 ### Patch Changes

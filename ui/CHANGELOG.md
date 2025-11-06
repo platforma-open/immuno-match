@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.immuno-match.ui
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [afe0ac3]
+  - @platforma-open/milaboratories.immuno-match.model@1.1.0
+
 ## 1.0.6
 
 ### Patch Changes
