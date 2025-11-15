@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.immuno-match
 
+## 1.1.5
+
+### Patch Changes
+
+- 4c31e35: Block metadata updated
+
 ## 1.1.4
 
 ### Patch Changes
