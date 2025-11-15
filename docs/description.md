@@ -1,28 +1,11 @@
 # Overview
 
-This block implements the ImmunoMatch framework created by Fraternalilab (https://github.com/Fraternalilab/ImmunoMatch). ImmunoMatch is a machine learning framework for deciphering the molecular rules governing the pairing of antibody chains. Fine-tuned on an antibody-specific language model (AntiBERTA2), ImmunoMatch learns from paired H and L sequences from single human B cells to distinguish cognate H-L pairs and randomly paired sequences.
+Predicts cognate pairing of heavy and light immunoglobulin chains from single-cell B-cell receptor sequencing data using the ImmunoMatch machine learning framework. The block processes VH-VL sequence pairs from single-cell clonotype data (e.g., from MiXCR Clonotyping) and uses fine-tuned antibody-specific language models (AntiBERTA2) to distinguish authentic cognate H-L pairs from randomly paired sequences, enabling accurate reconstruction of complete antibody molecules from single-cell sequencing data.
 
-This integration specifically uses the κ (kappa) and λ (lambda) models from the Fraternalilab ImmunoMatch repository:
-- **ImmunoMatch-κ**: Trained on antibodies with κ light chains
-- **ImmunoMatch-λ**: Trained on antibodies with λ light chains
+The block implements the ImmunoMatch framework created by Fraternalilab, which learns molecular rules governing antibody chain pairing from paired H and L sequences from single human B cells. The integration uses separate models for κ (kappa) and λ (lambda) light chains, allowing accurate pairing prediction for both light chain types. For each VH-VL sequence pair, the block calculates pairing scores that quantify the likelihood of cognate pairing, enabling identification of authentic antibody pairs and filtering of spurious pairings that may arise from sequencing or analysis artifacts. This analysis is essential for downstream applications such as antibody discovery, functional characterization, and understanding antibody-antigen interactions.
 
-The original `Run_ImmunoMatch.ipynb` notebook from the Fraternalilab repository has been modified into a parametrized Python script for use in this block, enabling the tool to obtain H-L pairing scores for given VH-VL sequence pairs or to annotate sequences in batch.
+The block uses ImmunoMatch models from the [Fraternalilab repository](https://github.com/Fraternalilab/ImmunoMatch). When using this block in your research, cite the ImmunoMatch publication (Guo et al. 2025) listed below.
 
-The block takes the output of "MiXCR Clonotyping 2" block as input.
+The following publication describes the methodology used:
 
-Please cite:
-- *doi: [10.1101/2025.02.11.637677](https://doi.org/10.1101/2025.02.11.637677)*
-
-```
-@article {Guo2025.02.11.637677,
-	author = {Guo, Dongjun and Dunn-Walters, Deborah K and Fraternali, Franca and Ng, Joseph CF},
-	title = {ImmunoMatch learns and predicts cognate pairing of heavy and light immunoglobulin chains},
-	elocation-id = {2025.02.11.637677},
-	year = {2025},
-	doi = {10.1101/2025.02.11.637677},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2025/02/15/2025.02.11.637677},
-	journal = {bioRxiv}
-}
-```
-
+> Guo, D., Dunn-Walters, D. K., Fraternali, F., & Ng, J. C. F. (2025). ImmunoMatch learns and predicts cognate pairing of heavy and light immunoglobulin chains. _bioRxiv_ 2025.02.11.637677 (2025). [https://doi.org/10.1101/2025.02.11.637677](https://doi.org/10.1101/2025.02.11.637677)
