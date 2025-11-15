@@ -29,7 +29,7 @@
       "logo": "file:../logos/block-logo.png",
       "url": "https://github.com/platforma-open/immuno-match",
       "support": "mailto:support@milaboratories.com",
-      "description": "Predict and analyze cognate pairing of heavy and light immunoglobulin chains",
+      "description": "Predicts cognate pairing of heavy and light immunoglobulin chains using ImmunoMatch machine learning framework to identify authentic antibody H-L pairs from single-cell B-cell receptor data.",
       "longDescription": "file:../docs/description.md",
       "changelog": "file:../CHANGELOG.md",
       "tags": [
