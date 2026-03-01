@@ -63,7 +63,7 @@ self.body(func(inputs) {
 		arg("--ltype_col").arg("locus").
 		// Save the ImmunoMatch output CSV file to prevent it from being deleted after the template execution
 		saveFile("predictions.csv").
-		
+		saveStdoutStream().
 		printErrStreamToStdout().
 		run()
     
