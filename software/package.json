@@ -11,22 +11,19 @@
     "prepublishOnly": "pl-pkg prepublish"
   },
   "block-software": {
-    "artifacts": {
-      "immuno-match-artifact": {
-        "type": "python",
-        "registry": "platforma-open",
-        "environment": "@platforma-open/milaboratories.runenv-python-3:3.12.10",
-        "dependencies": {
-          "toolset": "pip",
-          "requirements": "requirements.txt"
-        },
-        "root": "./src"
-      }
-    },
     "entrypoints": {
       "immuno-match": {
         "binary": {
-          "artifact": "immuno-match-artifact",
+          "artifact": {
+            "type": "python",
+            "registry": "platforma-open",
+            "environment": "@platforma-open/milaboratories.runenv-python-3:3.12.10",
+            "dependencies": {
+              "toolset": "pip",
+              "requirements": "requirements.txt"
+            },
+            "root": "./src"
+          },
           "cmd": [
             "python",
             "{pkg}/immuno-match.py"
@@ -35,7 +32,16 @@
       },
       "default-cutoff": {
         "binary": {
-          "artifact": "immuno-match-artifact",
+          "artifact": {
+            "type": "python",
+            "registry": "platforma-open",
+            "environment": "@platforma-open/milaboratories.runenv-python-3:3.12.10",
+            "dependencies": {
+              "toolset": "pip",
+              "requirements": "requirements.txt"
+            },
+            "root": "./src"
+          },
           "cmd": [
             "python",
             "{pkg}/default-cutoff.py"

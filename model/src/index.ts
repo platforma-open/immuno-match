@@ -1,6 +1,7 @@
 import type { GraphMakerState } from '@milaboratories/graph-maker';
 import type {
   InferOutputsType,
+  PFrameHandle,
   PlRef,
 } from '@platforma-sdk/model';
 import {
@@ -55,7 +56,7 @@ export const model = BlockModel.create()
   .output('log', (ctx) => ctx.outputs?.resolve('log')?.getLogHandle())
 
   // Get the IMM predictions and prepare them for the histogram graph
-  .output('predictions', (ctx) => {
+  .outputWithStatus('predictions', (ctx): PFrameHandle | undefined => {
     const pCols = ctx.outputs?.resolve('predictions')?.getPColumns();
     if (pCols === undefined) return undefined;
 
