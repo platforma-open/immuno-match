@@ -1,5 +1,14 @@
 # @platforma-open/milaboratories.immuno-match.workflow
 
+## 1.3.1
+
+### Patch Changes
+
+- 9f2784b: Updated SDK versions to the latest UI and Model packages.
+  Migrated to `@milaboratories/ts-builder`.
+- Updated dependencies [9f2784b]
+  - @platforma-open/milaboratories.immuno-match.software@1.2.4
+
 ## 1.3.0
 
 ### Minor Changes

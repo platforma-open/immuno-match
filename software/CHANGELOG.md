@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.immuno-match.software
 
+## 1.2.4
+
+### Patch Changes
+
+- 9f2784b: Updated SDK versions to the latest UI and Model packages.
+  Migrated to `@milaboratories/ts-builder`.
+
 ## 1.2.3
 
 ### Patch Changes
