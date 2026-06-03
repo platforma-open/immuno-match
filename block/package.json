@@ -35,7 +35,8 @@
       "tags": [
         "downstream",
         "vdj",
-        "single-cell"
+        "single-cell",
+        "gpu"
       ],
       "organization": {
         "name": "MiLaboratories Inc",
